@@ -1,0 +1,67 @@
+:root {
+  // 基础颜色 - 提高对比度
+  --background-primary: #ffffff;
+  --background-secondary: #f1f5f9; // 更深的背景色
+  --background-hover: rgba(0, 0, 0, 0.06); // 增加不透明度
+
+  // 文本颜色 - 加深对比
+  --text-primary: #1a202c; // 更深的主要文本
+  --text-secondary: #334155; // 更深的次要文本
+  --text-tertiary: #64748b; // 调整第三级文本
+
+  // 状态颜色 - 增加饱和度
+  --success-color: #22c55e; // 更鲜艳的绿色
+  --success-hover: #16a34a;
+  --error-color: #ef4444; // 更鲜艳的红色
+  --error-hover: #dc2626;
+  --disabled-color: #94a3b8;
+  --disabled-hover: #64748b;
+
+  // 渐变色 - 增加对比度
+  --success-gradient: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  --error-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  --disabled-gradient: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+
+  // 阴影 - 增加明显度
+  --shadow-color: rgba(0, 0, 0, 0.12);
+  --success-shadow: rgba(34, 197, 94, 0.25);
+  --error-shadow: rgba(239, 68, 68, 0.25);
+
+  // 按钮状态过渡 - 优化对比
+  --button-bg-disabled: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+  --button-bg-enabled: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  --button-text-disabled: #f8fafc;
+  --button-text-enabled: #ffffff;
+
+  // 新增边框颜色
+  --border-color: #e2e8f0; // 明显的边框色
+  --border-color-hover: #cbd5e1;
+}
+
+[data-theme="dark"] {
+  // 基础颜色
+  --background-primary: #1a202c;
+  --background-secondary: #2d3748;
+  --background-hover: rgba(255, 255, 255, 0.06);
+
+  // 文本颜色
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #a0aec0;
+
+  // 状态颜色调整为暗色主题
+  --success-color: #68d391;
+  --success-hover: #48bb78;
+  --error-color: #fc8181;
+  --error-hover: #f56565;
+  --disabled-color: #718096;
+  --disabled-hover: #4a5568;
+
+  // 按钮状态过渡
+  --button-bg-disabled: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  --button-bg-enabled: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+
+  // 边框颜色
+  --border-color: #4a5568;
+  --border-color-hover: #718096;
+}

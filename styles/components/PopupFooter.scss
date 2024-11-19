@@ -1,0 +1,88 @@
+@use "~/styles/variables" as *;
+
+.popup-footer {
+  padding: $spacing-md $spacing-lg;
+  background: var(--background-secondary);
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $font-size-xs;
+    color: var(--text-tertiary);
+  }
+
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  .version-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    background: var(--background-hover);
+
+    svg {
+      color: var(--text-secondary);
+    }
+  }
+
+  .made-with {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    .heart-icon {
+      color: var(--error-color);
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+  }
+
+  .github-link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: $spacing-xs $spacing-sm;
+    transition: $transition-base;
+    border-radius: $border-radius-sm;
+
+    &:hover {
+      color: var(--text-primary);
+      background: var(--background-hover);
+    }
+
+    svg {
+      transition: $transition-base;
+    }
+
+    &:hover svg {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
+}

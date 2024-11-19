@@ -1,33 +1,78 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+<div align="center">
+  <img src="assets/icon.png" alt="Nice Extension Logo" width="128" height="128" />
+  <h1>✨ Nice Extension ✨</h1>
+  <p>一个优雅的浏览器扩展，让您在任何网页都能自由复制文本 🚀</p>
+</div>
 
-## Getting Started
+## 🌟 功能特色
 
-First, run the development server:
+- 🎯 **一键启用复制**: 一键启用复制，无限制地复制网页上任何内容，并可复制带有原文的 HTML 格式的文本
+- 🛡️ **无破坏植入**: 植入的代码不会影响原网站的功能，开关式操作满足你复杂的需求，植入的代码不影响网站原有功能，温和且有效
+- ✨ **精美的UI**: 精心设计的亮色/暗色主题，精美的的动画效果和现代化的界面设计
+
+## 💡 使用指南
+
+1. 点击前往 [Release 页面](https://github.com/flower0wine/nice/releases) 下载最新版本 zip 文件，如果你不会安装该类型文件，点击前往 [哔哩哔哩——zip 插件安装](https://www.bilibili.com/opus/990637127408549913)。
+1. 点击浏览器工具栏中的 Nice 图标
+1. 在弹出窗口中开启所需功能：
+   - 🔓 **启用文本复制**: 移除复制限制，保留原文格式，启用后自动开启 `禁用网站自带的复制事件监听` 和 `保留复制文本的 HTML 格式` 两个选项。
+   - 🎯 **禁用网站的复制监听事件**: 有些网站在复制时会弹窗，十分影响体验，还有些网站会在复制的文本中添加一些无关的信息，开启这个选项能避免这些问题。
+   - 🎨 **保留复制文本的 HTML 格式**: 当你复制一些带有样式的文本时，开启这个选项能保留文本的样式。但是并不保证一定生效，比如复制的文字颜色并不能保留。
+
+## 插件截图
+
+<div align="center">
+  <img src="docs/images/dark.png" alt="暗色主题" style="width: 40%;" />
+  <img src="docs/images/light.png" alt="亮色主题" style="width: 40%;" />
+</div>
+
+## 🔧 兼容性
+
+| 浏览器  | 最低版本 | 推荐版本 |
+| ------- | -------- | -------- |
+| Chrome  | 88+      | 最新版   |
+| Edge    | 88+      | 最新版   |
+| Firefox | 78+      | 最新版   |
+| Opera   | 74+      | 最新版   |
+
+> 💡 提示：为获得最佳体验，建议使用各浏览器的最新版本。
+
+## 🚀 开发指南
+
+本项目使用 [Plasmo](https://docs.plasmo.com/) 框架开发，采用 pnpm 作为包管理器。
+
+### 开发环境设置
 
 ```bash
+# 安装依赖
+pnpm install
+
+# 启动开发服务器
 pnpm dev
-# or
-npm run dev
-```
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
-
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
-
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
-
-## Making production build
-
-Run the following:
-
-```bash
+# 构建生产版本
 pnpm build
-# or
-npm run build
 ```
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
+## 可能的疑问
 
-## Submit to the webstores
+### Q: 为什么不发布到插件商店？
 
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+A: 本来我也是想发的，但是 `Edge` 和 `Chrome` 注册开发者都要收费，Edge 注册费为 **114 元**，Chrome 注册费为 **5 美元**，本身这个插件就是**免费**的，所以就没注册，所以只能手动下载安装。
+
+如果你想让这个插件发布在插件商店中，你可以赞助我部分资金，这会加快它出现在商店中的进度。
+
+<div align="center">
+  <img src="https://github.com/flower0wine/nice/blob/master/docs/images/wechat.jpg" width="40%" alt="微信收款码">
+  <img src="https://github.com/flower0wine/nice/blob/master/docs/images/aipay.jpg" width="40%" alt="支付宝收款码">
+</div>
+
+## 🤝 贡献指南
+
+如果你是小白并且遇到了问题，可以前往 [Issues 页面](https://github.com/flower0wine/nice/issues/new) 创建问题，这个是与开发者交流的渠道。
+
+如果你是开发者，并且有更好的 Pull Request，请前往 [Pull Request 页面](https://github.com/flower0wine/nice/pulls) 提交你的代码。
+
+## 📝 开源协议
+
+项目采用 [MIT License](LICENSE) 开源协议。你可以免费使用、修改、分发和商业使用。

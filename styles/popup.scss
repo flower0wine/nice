@@ -1,0 +1,57 @@
+@use "variables" as *;
+@use "themes" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.popup-wrapper {
+  width: 380px;
+  min-height: 300px;
+  background: var(--background-primary);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-elevation-medium);
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: var(--shadow-elevation-high);
+  }
+}
+
+.popup-content {
+  padding: $spacing-xl;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.popup-description {
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.settings-group {
+  background: var(--background-secondary);
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  margin: $spacing-md 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  &:hover {
+    background: var(--background-hover);
+  }
+}

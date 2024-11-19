@@ -1,0 +1,98 @@
+name: "Create Release"
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    environment: Release
+    steps:
+      - uses: actions/checkout@v3
+
+      # 设置 Node.js 和 pnpm
+      - uses: actions/setup-node@v3.4.1
+        with:
+          node-version: 20.16.0
+
+      - name: Install pnpm
+        run: npm install -g pnpm@8.15.2
+
+      # 安装依赖
+      - name: Install dependencies
+        run: pnpm i
+
+      # 构建和打包
+      - name: Build the extension
+        run: pnpm build
+
+      - name: Package the extension
+        run: pnpm package
+
+      # 从 Secrets 获取并保存私钥
+      - name: Setup private key
+        run: |
+          if [ "${{ secrets.EXTENSION_PEM }}" == "" ]; then
+            echo "错误：请先在 GitHub Secrets 中设置 EXTENSION_PEM"
+            exit 1
+          fi
+          echo "${{ secrets.EXTENSION_PEM }}" > key.pem
+
+      # 安装 Chrome
+      - name: Install Chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install ./google-chrome-stable_current_amd64.deb
+
+      # 打包 CRX
+      - name: Package CRX
+        run: |
+          google-chrome --pack-extension=build/chrome-mv3-prod --pack-extension-key=key.pem
+          mv build/chrome-mv3-prod.crx ./build/nice-${{ github.ref_name }}.crx
+
+      # 检查打包文件是否存在
+      - name: Check package files
+        run: |
+          if [ ! -f "./build/chrome-mv3-prod.zip" ]; then
+            echo "Error: ZIP file not found at ./build/chrome-mv3-prod.zip"
+            exit 1
+          fi
+          if [ ! -f "./build/nice-${{ github.ref_name }}.crx" ]; then
+            echo "Error: CRX file not found"
+            exit 1
+          fi
+          echo "Package files exist and ready for upload"
+          mv ./build/chrome-mv3-prod.zip ./build/nice-${{ github.ref_name }}.zip
+
+      # 创建 Release
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            # 新版本 Nice ${{ github.ref_name }} 发布🎉✨
+
+            ### 新版本 Nice ${{ github.ref_name }} 发布🎉✨，点击下面的 `nice-${{ github.ref_name }}.zip` 进行下载，如果你是小白，请不要下载 source-code.zip 文件，这是插件源代码。
+
+            ### Q: 为什么不发布到插件商店？
+            A: 本来我也是想发的，但是 `Edge` 和 `Chrome` 注册开发者都要收费，Edge 注册费为 **114 元**，Chrome 注册费为 **5 美元**，本身这个插件就是**免费**的，所以就没注册，所以只能手动下载安装。
+
+            如果你想让这个插件发布在插件商店中，你可以赞助我部分资金，这会加快它出现在商店中的进度。
+
+            <div align="center">
+              <img src="https://github.com/flower0wine/nice/blob/master/docs/images/wechat.jpg" width="40%" alt="微信收款码">
+              <img src="https://github.com/flower0wine/nice/blob/master/docs/images/aipay.jpg" width="40%" alt="支付宝收款码">
+            </div>
+          draft: false
+          prerelease: false
+          files: |
+            ./build/nice-${{ github.ref_name }}.zip

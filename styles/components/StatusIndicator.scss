@@ -1,0 +1,151 @@
+@use "~/styles/variables" as *;
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+  border-radius: $border-radius-md;
+  background: var(--background-secondary);
+  overflow: hidden;
+
+  .status-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 100%;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--success-color) 0%, transparent 80%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .status-icon {
+      svg {
+        vertical-align: -2px;
+      }
+    }
+
+    &.enabled {
+      border-color: var(--success-color);
+
+      &::before {
+        opacity: 0.1;
+      }
+
+      .status-icon-wrapper {
+        background: var(--success-color);
+        box-shadow: 0 0 20px var(--success-shadow);
+      }
+
+      .status-badge {
+        background: var(--success-color);
+        transform: translate(50%, -50%) scale(1);
+      }
+
+      .status-icon {
+        color: white;
+      }
+
+      .status-text {
+        color: var(--success-color);
+        text-shadow: 0 0 20px var(--success-shadow);
+      }
+    }
+
+    &:not(.enabled) {
+      .status-icon-wrapper {
+        background: var(--disabled-color);
+      }
+
+      .status-badge {
+        transform: translate(50%, -50%) scale(0);
+      }
+
+      .status-icon {
+        color: var(--background-secondary);
+      }
+    }
+  }
+
+  .status-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .status-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--success-color);
+    color: white;
+    transform-origin: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .status-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    z-index: 1;
+  }
+
+  .status-text {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+  }
+
+  .status-description {
+    font-size: $font-size-xs;
+    color: var(--text-tertiary);
+  }
+
+  // 光效动画
+  &:has(.status-content.enabled) .status-icon-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0%,
+      var(--success-color) 50%,
+      transparent 100%
+    );
+    animation: rotate 2s linear infinite;
+    opacity: 0.3;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

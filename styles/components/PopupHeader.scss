@@ -1,0 +1,167 @@
+@use "~/styles/variables" as *;
+
+.popup-header {
+  padding: $spacing-lg $spacing-xl;
+  background: var(--background-primary);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--success-color) 0%, transparent 70%);
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  .icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $border-radius-full;
+    background: var(--background-secondary);
+    color: var(--text-secondary);
+    transition: $transition-base;
+    cursor: pointer;
+
+    .sparkle {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      color: var(--success-color);
+      filter: drop-shadow(0 0 2px var(--success-color));
+      animation: sparkle 2s infinite;
+    }
+
+    &:hover {
+      background: var(--background-hover);
+      color: var(--success-color);
+    }
+  }
+
+  .text-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  .title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  .popup-title {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    background: linear-gradient(
+      135deg,
+      var(--text-primary) 0%,
+      var(--success-color) 50%,
+      var(--text-primary) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease infinite;
+  }
+
+  .title-badge {
+    padding: 2px 6px;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--success-color), var(--success-hover));
+    border-radius: $border-radius-sm;
+    box-shadow: 0 2px 4px var(--success-shadow);
+  }
+
+  .popup-description {
+    font-size: $font-size-sm;
+    color: var(--text-tertiary);
+    margin: 0;
+    font-weight: 500;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--text-tertiary), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .header-decoration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--success-color) 0%,
+      transparent 50%,
+      var(--success-color) 100%
+    );
+    background-size: 200% auto;
+    transform-origin: left;
+    animation: shimmer 3s ease infinite;
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}

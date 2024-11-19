@@ -1,0 +1,73 @@
+@use "~/styles/variables" as *;
+@use "~/styles/themes" as *;
+
+.warning-container {
+  padding: $spacing-md $spacing-lg;
+  background: var(--warning-background);
+  border-left: 4px solid var(--warning-border);
+}
+
+.feature-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--disabled-color);
+  padding: $spacing-md;
+  z-index: $z-index-dropdown;
+
+  &-content {
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: $spacing-md;
+  }
+}
+
+.warning {
+  &-icon {
+    font-size: $font-size-xl;
+    color: var(--error-color);
+  }
+
+  &-message {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 $spacing-xs;
+      color: var(--error-color);
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: $spacing-xs $spacing-sm;
+  transition: $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
