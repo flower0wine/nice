@@ -19,18 +19,8 @@ export function setupCopyListener(
   window.__niceStyle = window.__niceStyle || null;
   window.__formatEnabled = formatEnabled;
 
-  function error(message: string, ...args: any[]) {
-    console.error(`[Nice Extension]: ${message}`, ...args);
-  }
-
-  function debug(message: string, ...args: any[]) {
-    if (process.env.NODE_ENV === "development") {
-      console.debug(`[Nice Extension]: ${message}`, ...args);
-    }
-  }
-
   // 处理富文本复制
-  async function formatCopy(e: ClipboardEvent, container: HTMLDivElement) {
+  function formatCopy(e: ClipboardEvent, container: HTMLDivElement) {
     try {
       // 首先尝试现代 API
       if (navigator.clipboard && navigator.clipboard.write) {
@@ -38,7 +28,7 @@ export function setupCopyListener(
           "text/html": new Blob([container.innerHTML], { type: "text/html" }),
           "text/plain": new Blob([container.innerText], { type: "text/plain" }),
         });
-        await navigator.clipboard.write([clipboardItem]);
+        navigator.clipboard.write([clipboardItem]);
         return true;
       }
 
@@ -68,13 +58,13 @@ export function setupCopyListener(
       selection.removeAllRanges();
       return result;
     } catch (error) {
-      error("富文本复制失败:", error);
+      console.log("富文本复制失败:", error);
       return false;
     }
   }
 
   // 处理纯文本复制
-  async function pureCopy(e: ClipboardEvent, container: HTMLDivElement) {
+  function pureCopy(e: ClipboardEvent, container: HTMLDivElement) {
     const text = container.innerText || container.textContent || "";
     if (!text.trim()) return false;
 
@@ -85,10 +75,10 @@ export function setupCopyListener(
         return true;
       }
 
-      await navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(text);
       return true;
     } catch (clipError) {
-      error("纯文本剪贴板错误:", clipError);
+      console.log("纯文本剪贴板错误:", clipError);
       try {
         const tempInput = document.createElement("textarea");
         tempInput.value = text;
@@ -98,7 +88,7 @@ export function setupCopyListener(
         document.body.removeChild(tempInput);
         return result;
       } catch (error) {
-        error("无法复制文本:", error);
+        console.log("无法复制文本:", error);
         return false;
       }
     }
@@ -124,12 +114,12 @@ export function setupCopyListener(
     if (window.__pureCopyListener) {
       document.removeEventListener("copy", window.__pureCopyListener, { capture: true });
       window.__pureCopyListener = null;
-      debug("已移除原有复制事件");
+      console.log("已移除原有复制事件");
     }
   }
 
   // 主要的复制处理函数
-  async function handleCopy(e: ClipboardEvent, preventCopy: boolean, formatEnabled: boolean) {
+  function handleCopy(e: ClipboardEvent, preventCopy: boolean, formatEnabled: boolean) {
     if (preventCopy) {
       e.preventDefault();
       e.stopPropagation();
@@ -147,16 +137,16 @@ export function setupCopyListener(
       const container = document.createElement("div");
       container.appendChild(range.cloneContents());
 
-      const success = formatEnabled ? await formatCopy(e, container) : await pureCopy(e, container);
+      const success = formatEnabled ? formatCopy(e, container) : pureCopy(e, container);
 
       if (success) {
-        debug(
+        console.log(
           `已复制${formatEnabled ? "富文本" : "纯文本"}:`,
           formatEnabled ? container.innerHTML : container.innerText
         );
       }
     } catch (error) {
-      error("复制失败:", error);
+      console.log("复制失败:", error);
     }
   }
 
@@ -169,10 +159,12 @@ export function setupCopyListener(
     removeUserSelectNone();
 
     // 设置新的复制处理器
-    const copyHandler = (e: ClipboardEvent) => handleCopy(e, preventCopy, formatEnabled);
+    const copyHandler = (e: ClipboardEvent) => {
+      handleCopy(e, preventCopy, formatEnabled);
+    };
     window.__pureCopyListener = copyHandler;
     document.addEventListener("copy", copyHandler, { capture: true });
 
-    debug("已启用复制模式");
+    console.log("已启用复制模式");
   }
 }

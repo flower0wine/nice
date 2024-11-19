@@ -1,6 +1,5 @@
 import React from "react";
 import type { FeatureSupport } from "../utils/featureDetect";
-import { motion } from "framer-motion";
 
 interface Props {
   feature: FeatureSupport;

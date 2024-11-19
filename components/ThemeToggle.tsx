@@ -1,4 +1,3 @@
-import React from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconSunFilled, IconMoonFilled } from "@tabler/icons-react";
@@ -30,7 +29,7 @@ const iconVariants = {
   },
 };
 
-export const ThemeToggle: React.FC = () => {
+export const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const isDark = theme === "dark";
 
