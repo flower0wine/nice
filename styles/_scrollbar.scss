@@ -1,0 +1,44 @@
+// 定义滚动条样式
+@mixin custom-scrollbar {
+  // 滚动条整体部分
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  // 滚动条轨道
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  // 滚动条滑块
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-thumb-color, rgba(156, 163, 175, 0.3));
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(
+        --scroll-thumb-hover-color,
+        rgba(156, 163, 175, 0.5)
+      );
+    }
+  }
+
+  // Firefox 的滚动条样式
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb-color, rgba(156, 163, 175, 0.3))
+    transparent;
+}
+
+// 在主题文件中添加滚动条颜色变量
+:root {
+  --scroll-thumb-color: rgba(156, 163, 175, 0.3);
+  --scroll-thumb-hover-color: rgba(156, 163, 175, 0.5);
+}
+
+[data-theme="dark"] {
+  --scroll-thumb-color: rgba(255, 255, 255, 0.2);
+  --scroll-thumb-hover-color: rgba(255, 255, 255, 0.3);
+}

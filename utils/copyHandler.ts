@@ -26,7 +26,7 @@ export function setupCopyListener(
       if (navigator.clipboard && navigator.clipboard.write) {
         const clipboardItem = new ClipboardItem({
           "text/html": new Blob([container.innerHTML], { type: "text/html" }),
-          "text/plain": new Blob([container.innerText], { type: "text/plain" }),
+          "text/plain": new Blob([container.innerText], { type: "text/plain" })
         });
         navigator.clipboard.write([clipboardItem]);
         return true;
@@ -112,20 +112,29 @@ export function setupCopyListener(
   // 清理现有的复制监听器
   function cleanupExistingListener() {
     if (window.__pureCopyListener) {
-      document.removeEventListener("copy", window.__pureCopyListener, { capture: true });
+      document.removeEventListener("copy", window.__pureCopyListener, {
+        capture: true
+      });
       window.__pureCopyListener = null;
       console.log("已移除原有复制事件");
     }
   }
 
   // 主要的复制处理函数
-  function handleCopy(e: ClipboardEvent, preventCopy: boolean, formatEnabled: boolean) {
+  function handleCopy(
+    e: ClipboardEvent,
+    preventCopy: boolean,
+    formatEnabled: boolean
+  ) {
     if (preventCopy) {
       e.preventDefault();
       e.stopPropagation();
     }
 
-    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement
+    ) {
       return;
     }
 
@@ -137,7 +146,9 @@ export function setupCopyListener(
       const container = document.createElement("div");
       container.appendChild(range.cloneContents());
 
-      const success = formatEnabled ? formatCopy(e, container) : pureCopy(e, container);
+      const success = formatEnabled
+        ? formatCopy(e, container)
+        : pureCopy(e, container);
 
       if (success) {
         console.log(
@@ -154,6 +165,7 @@ export function setupCopyListener(
   cleanupExistingListener();
 
   window.__niceStyle?.remove();
+  window.alert = () => {};
 
   if (enabled) {
     removeUserSelectNone();

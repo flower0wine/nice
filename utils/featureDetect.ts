@@ -19,8 +19,8 @@ export const checkFeatureSupport = (feature: string): FeatureSupport => {
       minVersion: {
         chrome: "66",
         firefox: "63",
-        edge: "79",
-      },
+        edge: "79"
+      }
     },
     // 文件系统访问 API
     fileSystem: {
@@ -28,15 +28,15 @@ export const checkFeatureSupport = (feature: string): FeatureSupport => {
       check: () => "showOpenFilePicker" in window,
       minVersion: {
         chrome: "86",
-        edge: "86",
-      },
-    },
+        edge: "86"
+      }
+    }
   };
 
   const featureCheck = features[feature];
   return {
     name: featureCheck.name,
     supported: featureCheck.check(),
-    minVersion: featureCheck.minVersion,
+    minVersion: featureCheck.minVersion
   };
 };

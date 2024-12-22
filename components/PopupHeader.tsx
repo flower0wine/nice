@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
-import { ThemeToggle } from "./ThemeToggle";
 import { IconCopy, IconSparkles } from "@tabler/icons-react";
+import { motion } from "framer-motion";
 import { contentVariants } from "~/utils/animations";
+import { ThemeToggle } from "./ThemeToggle";
 import "~/styles/components/PopupHeader.scss";
 
 interface PopupHeaderProps {
@@ -18,17 +18,15 @@ export function PopupHeader({ title }: PopupHeaderProps) {
             whileHover={{
               rotate: 360,
               scale: 1.1,
-              boxShadow: "0 0 15px var(--success-shadow)",
+              boxShadow: "0 0 15px var(--success-shadow)"
             }}
-            transition={{ duration: 0.5 }}
-          >
+            transition={{ duration: 0.5 }}>
             <IconCopy size={24} />
             <motion.div
               className="sparkle"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-            >
+              transition={{ duration: 0.3, delay: 0.2 }}>
               <IconSparkles size={12} />
             </motion.div>
           </motion.div>
@@ -39,16 +37,14 @@ export function PopupHeader({ title }: PopupHeaderProps) {
                 className="popup-title"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
+                transition={{ duration: 0.3 }}>
                 {title}
               </motion.h1>
               <motion.span
                 className="title-badge"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+                transition={{ delay: 0.3 }}>
                 Pro
               </motion.span>
             </motion.div>
@@ -56,8 +52,7 @@ export function PopupHeader({ title }: PopupHeaderProps) {
               className="popup-description"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-            >
+              transition={{ duration: 0.3, delay: 0.1 }}>
               强大且灵活的网页文本复制工具
             </motion.p>
           </div>
@@ -66,8 +61,7 @@ export function PopupHeader({ title }: PopupHeaderProps) {
         <motion.div
           className="theme-toggle-wrapper"
           whileHover={{ rotate: 15 }}
-          whileTap={{ scale: 0.95 }}
-        >
+          whileTap={{ scale: 0.95 }}>
           <ThemeToggle />
         </motion.div>
       </div>

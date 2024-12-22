@@ -1,5 +1,6 @@
 @use "variables" as *;
 @use "themes" as *;
+@use "scrollbar" as *;
 
 * {
   margin: 0;
@@ -13,26 +14,24 @@ body {
 }
 
 .popup-wrapper {
-  width: 380px;
-  min-height: 300px;
+  width: 400px;
+  max-height: 600px;
+  overflow-y: auto;
   background: var(--background-primary);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow-elevation-medium);
-  transition: $transition-base;
+  @include custom-scrollbar;
 
-  &:hover {
-    box-shadow: var(--shadow-elevation-high);
+  .popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding: $spacing-md;
+
+    .settings-group {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
   }
-}
-
-.popup-content {
-  padding: $spacing-xl;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-lg;
 }
 
 .popup-description {
@@ -53,5 +52,49 @@ body {
 
   &:hover {
     background: var(--background-hover);
+  }
+}
+
+// Tooltip 样式
+[data-radix-tooltip-trigger-container] {
+  width: 100%;
+}
+
+.TooltipContent {
+  max-width: 250px;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-tooltip);
+  background-color: var(--background-tooltip);
+  box-shadow: var(--shadow-tooltip);
+  user-select: none;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+
+  &[data-state="delayed-open"] {
+    animation-name: slideUpAndFade;
+  }
+
+  .TooltipArrow {
+    fill: var(--background-tooltip);
+    stroke: var(--border-color);
+    stroke-width: 1px;
+  }
+}
+
+// 动画
+@keyframes slideUpAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

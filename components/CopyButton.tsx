@@ -1,5 +1,5 @@
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import { IconCopy, IconCheck } from "@tabler/icons-react";
 import "~/styles/components/CopyButton.scss";
 
 interface CopyButtonProps {
@@ -13,8 +13,7 @@ export function CopyButton({ enabled, onClick, disabled }: CopyButtonProps) {
     <button
       className={`copy-button ${enabled ? "enabled" : ""}`}
       onClick={onClick}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       <div className="button-background" />
       <motion.div className="button-content" layout>
         <motion.div className="icon-wrapper" layout>
@@ -22,16 +21,14 @@ export function CopyButton({ enabled, onClick, disabled }: CopyButtonProps) {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
               <IconCheck size={24} />
             </motion.div>
           ) : (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
               <IconCopy size={24} />
             </motion.div>
           )}

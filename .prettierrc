@@ -1,10 +1,25 @@
 {
-  "semi": true,
-  "singleQuote": false,
-  "trailingComma": "es5",
-  "printWidth": 100,
+  "printWidth": 80,
   "tabWidth": 2,
   "useTabs": false,
+  "semi": true,
+  "endOfLine": "crlf",
+  "singleQuote": false,
+  "trailingComma": "none",
   "bracketSpacing": true,
-  "arrowParens": "avoid"
+  "bracketSameLine": true,
+  "arrowParens": "always",
+  "importOrder": [
+    "<BUILTIN_MODULES>",
+    "<THIRD_PARTY_MODULES>",
+    "^@plasmo/(.*)$",
+    "^@plasmohq/(.*)$",
+    "^~(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderBuiltinModulesToTop": true,
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"]
 }

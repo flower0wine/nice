@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-md;
   border-radius: $border-radius-md;
   background: var(--background-secondary);
   overflow: hidden;
@@ -24,7 +23,11 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, var(--success-color) 0%, transparent 80%);
+      background: linear-gradient(
+        135deg,
+        var(--success-color) 0%,
+        transparent 80%
+      );
       opacity: 0;
       transition: opacity 0.3s ease;
     }

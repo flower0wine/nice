@@ -9,13 +9,16 @@
   cursor: pointer;
   transition: $transition-base;
   position: relative;
-  overflow: hidden;
 
   &::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--success-color) 0%, transparent 80%);
+    background: linear-gradient(
+      135deg,
+      var(--success-color) 0%,
+      transparent 80%
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -86,7 +89,11 @@
     position: absolute;
     inset: -2px;
     border-radius: $border-radius-full;
-    background: linear-gradient(135deg, var(--success-color), var(--success-hover));
+    background: linear-gradient(
+      135deg,
+      var(--success-color),
+      var(--success-hover)
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -121,7 +128,11 @@
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: linear-gradient(45deg, var(--success-color), var(--success-hover));
+      background: linear-gradient(
+        45deg,
+        var(--success-color),
+        var(--success-hover)
+      );
       opacity: 0;
       transition: opacity 0.3s ease;
     }

@@ -1,4 +1,4 @@
-import { useSyncExternalStore, useState, useEffect } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 interface UseChromeStorageOptions<T> {
   defaultValue?: T;
@@ -18,10 +18,10 @@ export function useChromeStorage<T>(
   useEffect(() => {
     storage
       .get(key)
-      .then(result => {
+      .then((result) => {
         setData(result[key] ?? defaultValue);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error retrieving data from storage:", error);
       });
   }, []);
@@ -34,11 +34,11 @@ export function useChromeStorage<T>(
     const handleStorageChange = () => {
       storage
         .get(key)
-        .then(result => {
+        .then((result) => {
           setData(result[key] ?? defaultValue);
           callback();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Error retrieving data from storage on change:", error);
         });
     };
@@ -47,7 +47,11 @@ export function useChromeStorage<T>(
     return () => chrome.storage.onChanged.removeListener(handleStorageChange);
   };
 
-  const value = useSyncExternalStore(subscribe, getSnapshot, () => defaultValue);
+  const value = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    () => defaultValue
+  );
 
   const setValue = async (newValue: T) => {
     try {

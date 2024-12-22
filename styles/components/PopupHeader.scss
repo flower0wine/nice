@@ -14,7 +14,11 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, var(--success-color) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      var(--success-color) 0%,
+      transparent 70%
+    );
     opacity: 0.03;
     pointer-events: none;
   }
@@ -97,7 +101,11 @@
     font-size: $font-size-xs;
     font-weight: 600;
     color: white;
-    background: linear-gradient(135deg, var(--success-color), var(--success-hover));
+    background: linear-gradient(
+      135deg,
+      var(--success-color),
+      var(--success-hover)
+    );
     border-radius: $border-radius-sm;
     box-shadow: 0 2px 4px var(--success-shadow);
   }

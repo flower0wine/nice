@@ -1,32 +1,38 @@
-const eslint = require("@eslint/js");
-const tseslint = require("@typescript-eslint/eslint-plugin");
-const tsparser = require("@typescript-eslint/parser");
-const reactPlugin = require("eslint-plugin-react");
-const reactHooksPlugin = require("eslint-plugin-react-hooks");
-const prettierPlugin = require("eslint-plugin-prettier");
+const eslint = require("@eslint/js")
+const tseslint = require("@typescript-eslint/eslint-plugin")
+const tsparser = require("@typescript-eslint/parser")
+const reactPlugin = require("eslint-plugin-react")
+const reactHooksPlugin = require("eslint-plugin-react-hooks")
+const prettierPlugin = require("eslint-plugin-prettier")
 
 module.exports = [
   eslint.configs.recommended,
   {
     ignores: ["build/*", "node_modules/*", ".plasmo/*"],
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{ts,tsx,js}"],
     plugins: {
       "@typescript-eslint": tseslint,
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
-      prettier: prettierPlugin,
+      prettier: prettierPlugin
     },
     languageOptions: {
       parser: tsparser,
       parserOptions: {
         ecmaVersion: 2021,
-        sourceType: "module",
-      },
+        sourceType: "module"
+      }
     },
+    extends: [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
     settings: {
       react: {
-        version: "detect",
-      },
+        version: "detect"
+      }
     },
     rules: {
       "prettier/prettier": "error",
@@ -34,7 +40,7 @@ module.exports = [
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "no-undef": "off",
       "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/rules-of-hooks": "error",
-    },
-  },
-];
+      "react-hooks/rules-of-hooks": "error"
+    }
+  }
+]

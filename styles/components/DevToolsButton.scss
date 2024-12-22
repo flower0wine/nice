@@ -1,0 +1,61 @@
+@use "~/styles/variables" as *;
+
+.devtools-button {
+  position: relative;
+  width: 100%;
+  padding: $spacing-md;
+  border: none;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  font-size: $font-size-md;
+  font-weight: 500;
+
+  .button-background {
+    position: absolute;
+    inset: 0;
+    background: var(--button-bg-disabled);
+    transition: all 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--error-gradient);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+
+  &.enabled .button-background::before {
+    opacity: 1;
+  }
+
+  .button-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    color: var(--text-primary);
+
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &:hover .button-content {
+    transform: translateY(-1px);
+  }
+}
