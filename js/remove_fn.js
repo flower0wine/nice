@@ -4,6 +4,7 @@ const logger = window.__nice_logger;
 function setupDynamicCodeInterception() {
   // 保存原始函数
   const originalFunction = window.Function;
+  const originalFunctionConstructor = window.Function.prototype.constructor;
   const originalEval = window.eval;
 
   // 重写 Function 构造函数
@@ -17,10 +18,25 @@ function setupDynamicCodeInterception() {
     return originalFunction.apply(this, args);
   };
 
+  const newFunctionConstructor = function (...args) {
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] === "debugger") {
+        args[i] = "";
+      }
+    }
+
+    return originalFunctionConstructor.apply(this, args);
+  };
+
   // 复制原始 Function 的属性
   Object.defineProperties(newFunction, {
     length: { value: originalFunction.length },
     prototype: { value: originalFunction.prototype }
+  });
+
+  Object.defineProperties(newFunctionConstructor, {
+    length: { value: originalFunctionConstructor.length },
+    prototype: { value: originalFunctionConstructor.prototype }
   });
 
   // 重写 eval
@@ -35,9 +51,11 @@ function setupDynamicCodeInterception() {
   try {
     // 保存原始函数以便后续恢复
     window.__originalFunction = originalFunction;
+    window.__originalFunctionConstructor = originalFunctionConstructor;
     window.__originalEval = originalEval;
 
     window.Function = newFunction;
+    window.Function.prototype.constructor = newFunctionConstructor;
     window.eval = newEval;
 
     // 注入到 iframe 中
@@ -47,6 +65,12 @@ function setupDynamicCodeInterception() {
         if (iframeWindow) {
           Object.defineProperty(iframeWindow, "Function", {
             value: newFunction,
+            writable: true,
+            configurable: true
+          });
+
+          Object.defineProperty(iframeWindow, "Function", {
+            value: newFunctionConstructor,
             writable: true,
             configurable: true
           });
@@ -82,6 +106,12 @@ const observeIframes = () => {
                 configurable: true
               });
 
+              Object.defineProperty(iframeWindow, "Function", {
+                value: newFunctionConstructor,
+                writable: true,
+                configurable: true
+              });
+
               Object.defineProperty(iframeWindow, "eval", {
                 value: window.eval,
                 writable: true,
@@ -107,26 +137,13 @@ const originalSetInterval = window.setInterval;
 // 存储需要恢复的函数
 const storedIntervals = new Map();
 
+setupDynamicCodeInterception();
+
 // 重写 setInterval
 window.setInterval = function (handler, timeout) {
   let handlerStr = handler.toString();
 
   handlerStr = handlerStr.replace(/debugger/g, "");
 
-  if (handlerStr.length < 50) {
-    logger.warn(
-      handler,
-      "带有 debugger 的函数经过混淆之后长度一般不会很长，所以限制为 50 个字符，" +
-        "当然这里可能会影响到网站的正常执行"
-    );
-    return;
-  }
-
-  if (handlerStr.includes("detectDevTools")) {
-    // 存储原始定时器
-    const id = originalSetInterval.call(this, () => {}, timeout);
-    storedIntervals.set(id, handler);
-    return id;
-  }
   return originalSetInterval.call(this, handler, timeout);
 };

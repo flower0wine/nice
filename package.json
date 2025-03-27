@@ -3,11 +3,12 @@
   "displayName": "Nice",
   "version": "1.1.0",
   "description": "现在开上快车道，让你对网页的操作再无限制😁🎈🎉",
-  "author": {
-    "name": "flower0wine",
-    "email": "flowerwine8023@gmail.com",
-    "url": "https://github.com/flower0wine"
+  "author": "flower0wine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flower0wine/your-repo-name"
   },
+  "homepage": "https://github.com/flower0wine",
   "publishConfig": {
     "@flower0wine:registry": "https://npm.pkg.github.com"
   },
