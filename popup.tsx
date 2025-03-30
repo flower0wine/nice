@@ -7,6 +7,7 @@ import { AccordionGroup } from "~/components/AccordionGroup";
 import { AlertDialog } from "~/components/AlertDialog";
 import { CopyButton } from "~/components/CopyButton";
 import { FeatureWarning } from "~/components/FeatureWarning";
+import { NativeFunctionsStatus } from "~/components/NativeFunctionsStatus";
 import { PopupFooter } from "~/components/PopupFooter";
 import { PopupHeader } from "~/components/PopupHeader";
 import { StatusIndicator } from "~/components/StatusIndicator";
@@ -388,6 +389,10 @@ function IndexPopup() {
               }
               label="禁用键盘事件限制"
             />
+          </AccordionGroup>
+
+          <AccordionGroup title="系统状态">
+            <NativeFunctionsStatus />
           </AccordionGroup>
 
           <AlertDialog

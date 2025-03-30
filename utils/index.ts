@@ -34,37 +34,6 @@ export function parseAndModifyCode(code: string) {
         }
       },
 
-      // 处理函数声明
-      FunctionDeclaration(path) {
-        if (path.node.id && path.node.id.name === "detectDevTools") {
-          // 获取函数体
-          const body = path.node.body;
-          if (t.isBlockStatement(body)) {
-            // 在函数体开头插入 return 语句
-            body.body.unshift(t.returnStatement());
-          }
-        }
-      },
-
-      // 处理函数表达式（包括箭头函数）
-      FunctionExpression(path) {
-        if (
-          path.parent &&
-          t.isVariableDeclarator(path.parent) &&
-          t.isIdentifier(path.parent.id) &&
-          path.parent.id.name === "detectDevTools"
-        ) {
-          const body = path.node.body;
-          if (t.isBlockStatement(body)) {
-            body.body.unshift(t.returnStatement());
-          }
-        }
-      },
-
-      DebuggerStatement(path) {
-        path.remove();
-      },
-
       CallExpression: {
         enter(path) {
           // 首先确保节点是有效的
@@ -76,23 +45,6 @@ export function parseAndModifyCode(code: string) {
           const callee = path.node.callee;
           if (!callee) {
             return;
-          }
-
-          // 处理 setInterval
-          if (t.isIdentifier(callee)) {
-            if (callee.name === "setInterval") {
-              const args = path.node.arguments;
-              if (args && args.length > 0) {
-                const functionArg = args[0];
-                if (
-                  t.isIdentifier(functionArg) &&
-                  functionArg.name === "detectDevTools"
-                ) {
-                  path.remove();
-                }
-              }
-            }
-            return; // 如果是普通标识符，提前返回
           }
 
           // 处理 addEventListener
@@ -206,6 +158,6 @@ export function parseAndModifyCode(code: string) {
     console.error("代码解析错误:", error);
 
     // 7. 降级处理：如果解析失败，使用简单的字符串替换
-    return code.replace(/debugger;?/g, "");
+    return code;
   }
 }

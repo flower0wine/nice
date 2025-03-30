@@ -19,8 +19,6 @@ const observer = new MutationObserver((mutations) => {
       });
     }
   });
-
-  logger.success("已移除内嵌脚本的限制");
 });
 
 observer.observe(document.documentElement, { childList: true, subtree: true });

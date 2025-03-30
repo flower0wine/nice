@@ -1,0 +1,35 @@
+.native-functions-status {
+  .status-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .status-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--success-color);
+      color: white;
+    }
+
+    .status-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .status-title {
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: var(--text-primary);
+      }
+
+      .status-description {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+      }
+    }
+  }
+}

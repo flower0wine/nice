@@ -1,7 +1,7 @@
 {
   "name": "nice",
   "displayName": "Nice",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "现在开上快车道，让你对网页的操作再无限制😁🎈🎉",
   "author": "flower0wine",
   "repository": {
@@ -139,16 +139,6 @@
         ],
         "js": [
           "../contents/keyboard.ts"
-        ],
-        "run_at": "document_start",
-        "all_frames": true
-      },
-      {
-        "matches": [
-          "<all_urls>"
-        ],
-        "js": [
-          "../contents/debuger.ts"
         ],
         "run_at": "document_start",
         "all_frames": true

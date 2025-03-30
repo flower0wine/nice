@@ -1,4 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
+import { injectNativeFunctions } from "~/utils/nativeFunctions";
 import { logger } from "../utils/logger";
 
 // 监听所有请求的响应头
@@ -168,14 +169,29 @@ async function initCache() {
   }
 }
 
-// 在页面加载前注入设置
+// 在页面加载前注入原生函数
 chrome.webNavigation.onCommitted.addListener(
   async (details) => {
-    if (!cachedSettings) {
-      await initCache();
-    }
-
     try {
+      // 首先注入原生函数
+      await chrome.scripting.executeScript({
+        target: { tabId: details.tabId },
+        func: (code) => {
+          const script = document.createElement("script");
+          script.textContent = code;
+          document.documentElement.appendChild(script);
+          script.remove();
+        },
+        args: [injectNativeFunctions()],
+        world: "MAIN",
+        injectImmediately: true // 确保最早执行
+      });
+
+      // 然后注入设置
+      if (!cachedSettings) {
+        await initCache();
+      }
+
       await chrome.scripting.executeScript({
         target: { tabId: details.tabId },
         func: (settings) => {
@@ -192,7 +208,7 @@ chrome.webNavigation.onCommitted.addListener(
         injectImmediately: true
       });
     } catch (error) {
-      console.error("Failed to inject settings:", error);
+      logger.error("Failed to inject native functions:", error);
     }
   },
   {

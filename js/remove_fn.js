@@ -1,5 +1,38 @@
 const logger = window.__nice_logger;
 
+function processDebuggerString(str) {
+  // 1. 作为对象的键
+  str = str.replace(/([{,]\s*)"debugger"(\s*:)/g, '$1"_debugger_"$2');
+  str = str.replace(/([{,]\s*)'debugger'(\s*:)/g, "$1'_debugger_'$2");
+  str = str.replace(/([{,]\s*)debugger(\s*:)/g, "$1_debugger_$2");
+
+  // 2. 作为变量名
+  str = str.replace(/\bvar\s+debugger\b/g, "var _debugger_");
+  str = str.replace(/\blet\s+debugger\b/g, "let _debugger_");
+  str = str.replace(/\bconst\s+debugger\b/g, "const _debugger_");
+
+  // 3. 作为函数参数名
+  str = str.replace(
+    /\b(function\s*\([^)]*)\bdebugger\b([^)]*\))/g,
+    "$1_debugger_$2"
+  );
+  str = str.replace(/\b(=>\s*\([^)]*)\bdebugger\b([^)]*\))/g, "$1_debugger_$2");
+
+  // 4. 作为属性访问
+  str = str.replace(/\.(debugger)\b/g, "._debugger_");
+  str = str.replace(/\['debugger'\]/g, "['_debugger_']");
+  str = str.replace(/\["debugger"\]/g, '["_debugger_"]');
+
+  // 5. 作为字符串内容
+  str = str.replace(/'debugger'/g, "'_debugger_'");
+  str = str.replace(/"debugger"/g, '"_debugger_"');
+
+  // 6. 最后处理独立的 debugger 语句
+  str = str.replace(/\bdebugger\b/g, "");
+
+  return str;
+}
+
 // 拦截动态执行的代码
 function setupDynamicCodeInterception() {
   // 保存原始函数
@@ -11,7 +44,7 @@ function setupDynamicCodeInterception() {
   const newFunction = function (...args) {
     for (let i = 0; i < args.length; i++) {
       if (typeof args[i] === "string") {
-        args[i] = args[i].replace(/debugger/g, "");
+        args[i] = processDebuggerString(args[i]);
       }
     }
 
@@ -21,7 +54,7 @@ function setupDynamicCodeInterception() {
   const newFunctionConstructor = function (...args) {
     for (let i = 0; i < args.length; i++) {
       if (args[i] === "debugger") {
-        args[i] = "";
+        args[i] = processDebuggerString(args[i]);
       }
     }
 
@@ -42,7 +75,7 @@ function setupDynamicCodeInterception() {
   // 重写 eval
   const newEval = function (code) {
     if (typeof code === "string") {
-      code = code.replace(/debugger/g, "");
+      code = processDebuggerString(code);
     }
 
     return originalEval.call(window, code);
@@ -143,7 +176,7 @@ setupDynamicCodeInterception();
 window.setInterval = function (handler, timeout) {
   let handlerStr = handler.toString();
 
-  handlerStr = handlerStr.replace(/debugger/g, "");
+  handlerStr = processDebuggerString(handlerStr);
 
   return originalSetInterval.call(this, handler, timeout);
 };

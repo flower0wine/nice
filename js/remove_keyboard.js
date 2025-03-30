@@ -1,9 +1,9 @@
 (function () {
   const logger = window.__nice_logger;
-  const keyboardDisabled = window.__NICE_EXTENSION_SETTINGS__.keyboardDisabled;
-  const pasteDisabled = window.__NICE_EXTENSION_SETTINGS__.pasteDisabled;
+  const keyboardDisabled = window.__NICE_EXTENSION_SETTINGS__?.keyboardDisabled;
+  const pasteDisabled = window.__NICE_EXTENSION_SETTINGS__?.pasteDisabled;
   const contextMenuDisabled =
-    window.__NICE_EXTENSION_SETTINGS__.contextMenuDisabled;
+    window.__NICE_EXTENSION_SETTINGS__?.contextMenuDisabled;
 
   if (!keyboardDisabled && !pasteDisabled && !contextMenuDisabled) {
     logger.info("keyboardDisabled is false, return");
