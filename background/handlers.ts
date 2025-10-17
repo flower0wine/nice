@@ -10,6 +10,26 @@ export async function handleFetchScript(req: { url: string }) {
     return { success: false, error: error?.message };
   }
 }
+export async function cloneRepo(url: string) {
+  try {
+    const res = await fetch("http://localhost:9000/git/clone", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url })
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      return { success: false, error: `HTTP ${res.status}: ${text}` };
+    }
+
+    const data = await res.json().catch(() => ({}));
+    return { success: true, data };
+  } catch (e: any) {
+    logger.error("Clone request failed:", e);
+    return { success: false, error: e?.message || String(e) };
+  }
+}
 
 function wrapCodeInIIFE(code: string) {
   return `(function() {\n   try {\n     ${code}\n   } catch(e) {\n     console.error("Script execution failed:", e)\n   }\n })();`;

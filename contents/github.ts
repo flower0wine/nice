@@ -63,7 +63,9 @@ function setupClipboardCopyElementHook() {
         anyEl.setAttribute("data-clipboard-text", newValue);
       }
       anyEl.setAttribute?.(markAttr, "1");
-      logger.info("GitHub clipboard: element value patched with git clone prefix");
+      logger.info(
+        "GitHub clipboard: element value patched with git clone prefix"
+      );
     }
   };
 
@@ -118,6 +120,129 @@ try {
     );
   } else {
     setupClipboardCopyElementHook();
+  }
+} catch {}
+
+// ============== Clone Button Injection ==============
+
+function getRepoCloneUrl(): string | null {
+  // Prefer GitHub provided value on the page
+  // 1) Inputs that GitHub uses inside the Code dialog
+  const sshInput = document.getElementById(
+    "clone-with-ssh"
+  ) as HTMLInputElement | null;
+  const httpsInput = document.getElementById(
+    "clone-with-https"
+  ) as HTMLInputElement | null;
+  const sshVal = sshInput?.value?.trim();
+  const httpsVal = httpsInput?.value?.trim();
+  if (sshVal) return sshVal;
+  if (httpsVal) return httpsVal;
+
+  return null;
+}
+
+function createCloneButton() {
+  if (document.getElementById("nice-github-clone-btn")) return;
+
+  const bg = "#428f46";
+  const cloningBg = "#0969da";
+  const failedBg = "#d1242f";
+  const noUrlBg = "#9e9e9e";
+
+  const btn = document.createElement("button");
+  btn.id = "nice-github-clone-btn";
+  btn.textContent = "Clone Local";
+  // GitHub-like primary button style
+  btn.style.width = "100%";
+  btn.style.display = "inline-flex";
+  btn.style.justifyContent = "center";
+  btn.style.alignItems = "center";
+  btn.style.gap = "6px";
+  btn.style.padding = "6px 12px";
+  btn.style.margin = "0 0 6px 0";
+  btn.style.borderRadius = "6px";
+  btn.style.border = "1px solid rgba(27,31,36,0.15)";
+  btn.style.background = bg;
+  btn.style.color = "#fff";
+  btn.style.fontSize = "16px";
+  btn.style.fontWeight = "700";
+  btn.style.cursor = "pointer";
+  btn.style.boxShadow = "0 1px 0 rgba(27,31,36,0.1)";
+
+  const setState = (txt: string, bg?: string) => {
+    btn.textContent = txt;
+    if (bg) btn.style.background = bg;
+  };
+
+  btn.addEventListener("click", async () => {
+    try {
+      const url = getRepoCloneUrl();
+      if (!url) {
+        logger.warn("Clone: cannot determine repository URL");
+        setState("No Repo URL", noUrlBg);
+        return;
+      }
+
+      setState("Cloning...", cloningBg);
+      const res = await chrome.runtime.sendMessage({
+        type: "GITHUB_CLONE",
+        url
+      });
+
+      if (res?.success) {
+        logger.success("Clone: request sent", url);
+        setState("Requested", bg);
+      } else {
+        logger.error("Clone: request failed", res?.error || "Unknown error");
+        setState("Failed", failedBg);
+      }
+    } catch (e) {
+      logger.error("Clone: message error", e as any);
+      setState("Failed", failedBg);
+    } finally {
+      setTimeout(() => setState("Clone Local", bg), 1500);
+    }
+  });
+
+  // Try to place the button right below the specified container
+  const placeButton = () => {
+    const container = document.querySelector(
+      'div[class*="LocalTab-module__CloneContainer--fne3C"], div[class*="LocalTab-module__CloneContainer--"]'
+    );
+    if (container && container.parentElement) {
+      // Insert right before the container (place ABOVE it)
+      container.parentElement.insertBefore(btn, container);
+      logger.debug("Clone button placed above CloneContainer");
+      return true;
+    }
+    return false;
+  };
+
+  if (!placeButton()) {
+    // Fallback: append near body top if target not found yet
+    document.body.appendChild(btn);
+    logger.debug(
+      "Clone button fallback placed in body; waiting for target to appear"
+    );
+
+    // Observe until the target appears, then move it below target once
+    const obs = new MutationObserver(() => {
+      if (placeButton()) {
+        obs.disconnect();
+      }
+    });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+  }
+}
+
+try {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", createCloneButton, {
+      once: true
+    });
+  } else {
+    createCloneButton();
   }
 } catch {}
 

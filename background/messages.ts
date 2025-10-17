@@ -1,7 +1,7 @@
 import { logger } from "~/utils/logger";
 import { STORAGE_KEY } from "./constants";
 import { getCachedSettings } from "./storage";
-import { handleFetchScript, handleInjectScript, patchGithubClipboard } from "./handlers";
+import { handleFetchScript, handleInjectScript, patchGithubClipboard, cloneRepo } from "./handlers";
 
 export function registerMessageHandlers() {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -37,6 +37,16 @@ export function registerMessageHandlers() {
           sendResponse({ success: false, error: (error as any)?.message });
         }
       })();
+      return true;
+    }
+
+    if (message.type === "GITHUB_CLONE") {
+      cloneRepo(message.url)
+        .then(sendResponse)
+        .catch((error) => {
+          logger.error("GITHUB_CLONE failed:", error as any);
+          sendResponse({ success: false, error: (error as any)?.message });
+        });
       return true;
     }
   });
