@@ -85,3 +85,16 @@ A: 本来我也是想发的，但是 `Edge` 和 `Chrome` 注册开发者都要�
 ## 📝 开源协议
 
 项目采用 [MIT License](LICENSE) 开源协议。你可以免费使用、修改、分发和商业使用。
+
+## 可能的错误
+
+### Something went wrong installing the "sharp" module
+
+```txt
+Error:
+Something went wrong installing the "sharp" module
+
+Cannot find module '../build/Release/sharp-win32-x64.node'
+```
+
+解决方案：高版本 pnpm 会阻止 preinstall、postinstall 的执行，需要手动制定运行，执行 `pnpm approve-builds` 选择全部执行脚本即可。
