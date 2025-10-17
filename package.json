@@ -152,6 +152,17 @@
         ],
         "run_at": "document_start",
         "all_frames": true
+      },
+      {
+        "matches": [
+          "https://github.com/*",
+          "https://*.github.com/*"
+        ],
+        "js": [
+          "../contents/github.ts"
+        ],
+        "run_at": "document_start",
+        "all_frames": true
       }
     ],
     "background": {
